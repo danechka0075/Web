@@ -14,28 +14,30 @@
         </header>
         <main>
             <div class="addTask">
-                <h2>Add task</h2>
-                <label>Name task</label>
+                <h2 id="h2Add">Add task</h2>
+                <label class="labelAdd">Name task</label>
                 <input type="text" class="taskNameInput">
-                <div class="PriorityTask">
-                    <label>Priority</label>
-                    <select class="prioritySelect">
-                        <option value="low">Low</option>
-                        <option value="medium">Medium</option>
-                        <option value="high">High</option>
-                    </select>
+                <div class="PriorityandType">
+                    <div class="PriorityTask">
+                        <label class="labelPriority">Priority</label>
+                        <select class="prioritySelect">
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                    <div class="TypeTask">
+                        <label class="labelType">Type</label>
+                        <select class="typeSelect">
+                            <option value="other">Other</option>
+                            <option value="work">Work</option>
+                            <option value="personal">Personal</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="DateTask">
-                    <label>Date</label>
+                    <label class="labelAdd">Date</label>
                     <input type="date" class="dateInput">
-                </div>
-                <div class="TypeTask">
-                    <label>Type</label>
-                    <select class="typeSelect">
-                        <option value="other">Other</option>
-                        <option value="work">Work</option>
-                        <option value="personal">Personal</option>
-                    </select>
                 </div>
                 <button class="addTaskButton">Add Task</button>
             </div>

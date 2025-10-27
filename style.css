@@ -24,6 +24,45 @@ footer{
     margin-top: 100px;
     margin-bottom: 20px;
 }
+select{
+    width: 110px;
+    height: 35px;
+    border-radius: 5px;
+    border: 2px, solid #000000;
+}
+input[type="text"]{
+    width: 75%;
+    height: 30px;
+    font-size: 16px;
+    padding: 3px;
+    margin-bottom: 10px;
+    border: 2px solid #000000;
+    border-radius: 5px;
+}
+input[type="date"]{
+    width: 150px;
+    height: 30px;
+    font-size: 16px;
+    padding: 3px;
+    margin-top: 2px;
+    border: 2px solid #000000;
+    border-radius: 5px;
+}
+.labelPriority, .labelType{
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 5px;
+    margin-right: 10px;
+}
+.DateTask{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 15px;
+    margin-top: 15px;
+}
 .logo{
     width: 125px;
     height: 94px;
@@ -34,6 +73,38 @@ footer{
     flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+.addTask{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+    height: auto;
+    font-size: 16px;
+    padding: 10px;
+    border: 3px solid #1958ed;
+    border-radius: 5px;
+}
+.PriorityandType{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10%;
+    width: 100%;
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+.labelAdd{
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+#h2Add{
+    margin-bottom: 10px;
+    font-size: 26px;
+    font-weight: bold;
 }
 .icons{
     width: 50px;
