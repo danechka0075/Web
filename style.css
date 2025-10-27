@@ -48,6 +48,11 @@ input[type="date"]{
     border: 2px solid #000000;
     border-radius: 5px;
 }
+h3{
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
 .labelPriority, .labelType{
     font-size: 18px;
     font-weight: 500;
@@ -153,4 +158,38 @@ input[type="date"]{
 }
 .addTaskButton:hover{
     background-color: #0d3bb5;
+}
+.taskList:focus-within{
+    box-shadow: 0 0 5px #1958ed;
+    background-color: #f0f8ff;
+}
+.taskItem{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+.taskList{
+    display: none;
+}
+.taskItem:last-child{
+    border-bottom: none;
+}
+.buttonTaskList{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 10px;
+}
+#h2list{
+    margin-bottom: 10px;
+    font-size: 26px;
+    font-weight: bold;
+    padding: 10px;
 }
