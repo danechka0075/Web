@@ -9,9 +9,24 @@ header{
     justify-content: center;
     margin-top: 40px;
 }
+main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+}
+footer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 100px;
+    margin-bottom: 20px;
+}
 .logo{
     width: 125px;
-    height: 80px;
+    height: 94px;
     margin-right: 1px;
 }
 .mainPage{
@@ -22,5 +37,14 @@ header{
 }
 .icons{
     width: 50px;
-    height: 50px;
+    height: 50px;    
+}
+.socialIcons{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    gap: 15px;
 }

@@ -13,22 +13,55 @@
             <h1>My tasks</h1>
         </header>
         <main>
-
+            <div class="addTask">
+                <h2>Add task</h2>
+                <label>Name task</label>
+                <input type="text" class="taskNameInput">
+                <div class="PriorityTask">
+                    <label>Priority</label>
+                    <select class="prioritySelect">
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+                <div class="DateTask">
+                    <label>Date</label>
+                    <input type="date" class="dateInput">
+                </div>
+                <div class="TypeTask">
+                    <label>Type</label>
+                    <select class="typeSelect">
+                        <option value="other">Other</option>
+                        <option value="work">Work</option>
+                        <option value="personal">Personal</option>
+                    </select>
+                </div>
+                <button class="addTaskButton">Add Task</button>
+            </div>
+            <div class="taskList">
+                <h2>Task List</h2>
+                <div class="tasksUl">
+                    здесь будут задачи
+                </div>
+            </div>
         </main>
         <footer>
         <p>Дюков Данила Иванович №2252</p>
         <p>
-            <a href ="https://vk.com/unidubna_official">
-                <img src="images/вк-иконка.png" alt="Иконка вк" class="icons">
-            </a>
-                
-            <a href ="https://vk.com/danechka0075">
-                <img src="images/вк-иконка.png" alt="Иконка вк" class="icons">
-            </a>
-
-            <a href ="https://uni-dubna.ru/">
-                <img src="images/XS.webp" alt="Иконка Университета" class="icons">
-            </a>
+            <div class="socialIcons">
+                <a href ="https://vk.com/unidubna_official">
+                    <img src="images/вк-иконка.png" alt="Иконка вк" class="icons">
+                </a>
+                    
+                <a href ="https://vk.com/danechka0075">
+                    <img src="images/вк-иконка.png" alt="Иконка вк" class="icons">
+                </a>
+    
+                <a href ="https://uni-dubna.ru/">
+                    <img src="images/XS.webp" alt="Иконка Университета" class="icons">
+                </a>
+            </div>
         </p>
         <p>Университет Дубна, 2025</p>    
         </footer>
