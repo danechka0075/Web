@@ -26,25 +26,24 @@ const filterTaskPrioritySelect = document.querySelector('.filterPrioritySelect')
 const filterTaskTypeSelect = document.querySelector('.filterTypeSelect');
 const filterButtonApply = document.querySelector('.filterApplyButton');
 const filterButtonClear = document.querySelector('.filterClearButton');
+let flag_filter = false;
 let tasks = [];
 
 filterButtonApply.addEventListener('click', () => {
     const selectedPriority = filterTaskPrioritySelect.value;
     const selectedType = filterTaskTypeSelect.value;
+    flag_filter = true;
     const filteredTasks = tasks.filter(task => {
             return (selectedPriority === 'All' || task.priority === selectedPriority) &&
                    (selectedType === 'All' || task.type === selectedType);
     });
-    let taskListHTML = '';
-    filteredTasks.map((task, index) => {
-        taskListHTML += showTask(task, index);
-    });
-    taskListContainer.innerHTML = taskListHTML;
+    showFilteredTasks(filteredTasks);
 });
 
 filterButtonClear.addEventListener('click', () => {
     filterTaskPrioritySelect.value = 'All';
     filterTaskTypeSelect.value = 'All';
+    flag_filter = false;
     showAllTasks();
 });
 
@@ -75,7 +74,7 @@ addTaskButton.addEventListener('click', () => {
         "completed": false
     };
     tasks.push(newTask);
-    filterButtonClear.click();
+    flag_filter?filterButtonApply.click():showAllTasks();
     ostLiTask();
     nameTaskInput.value = '';
     dateInput.value = '';
@@ -125,15 +124,23 @@ const showAllTasks = () => {
     taskListContainer.innerHTML = taskListHTML;
 };
 
+const showFilteredTasks = (Tasks) => {
+    let taskListHTML = '';
+    Tasks.map((task, index) => {
+        taskListHTML += showTask(task, index);
+    });
+    taskListContainer.innerHTML = taskListHTML;
+};
+
 const delTask = (index) => {
     tasks.splice(index, 1);
-    showAllTasks();
+    flag_filter?filterButtonApply.click():showAllTasks();
     ostLiTask();
 };
 
 const completedTask = (index) => {
     tasks[index].completed = true;
-    showAllTasks();
+    flag_filter?filterButtonApply.click():showAllTasks();
 };
 
 const editTask = (index) => {
@@ -164,12 +171,12 @@ const editTask = (index) => {
 
 const cancelEditTask = (index) => {
     document.getElementsByClassName('boxUpdate')[index].innerHTML = '';
-    showAllTasks();
+    flag_filter?filterButtonApply.click():showAllTasks();
 };
 
 const setValues = (index, newName, newDate) => {
     tasks[index].name = newName;
     tasks[index].date = newDate;
     document.getElementsByClassName('boxUpdate')[index].innerHTML = '';
-    showAllTasks();
+    flag_filter?filterButtonApply.click():showAllTasks();
 };
