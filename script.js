@@ -18,7 +18,10 @@ const addTaskButton = document.querySelector('.addTaskButton');
 const taskListContainer = document.querySelector('.tasksListContent');
 const taskList = document.querySelector('.taskList');
 let tasks = [];
-
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' || event.key === 'NumpadEnter' || event.key === 'Return' ) {
+        addTaskButton.click();
+    }
 addTaskButton.addEventListener('click', () => {
     let nameTaskValue = nameTaskInput.value.trim();
     let priorityValue = prioritySelect.value;
