@@ -213,3 +213,42 @@ h3{
     font-weight: bold;
     padding: 10px;
 }
+.editTaskContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+    height: auto;
+    font-size: 16px;
+    padding: 10px;
+    border: 3px solid #1958ed;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+input[class="editNameInput"]{
+    width: 80%;
+    height: 20px;
+    font-size: 16px;
+    padding: 3px;
+    margin-bottom: 10px;
+    border: 2px solid #000000;
+    border-radius: 5px;
+}
+input[class="editDateInput"]{
+    width: 160px;
+    height: 20px;
+    font-size: 16px;
+    padding: 3px;
+    margin-bottom: 10px;
+    border: 2px solid #000000;
+    border-radius: 5px;
+}
+.buttonEditTask{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}

@@ -77,7 +77,7 @@ const showTask = (task, index) => {
             <button class="taskButton" onclick="completedTask(${index})">Complete</button>
         </div>
         <div class="boxUpdate">
-        
+
         <div/>
     </div>
     `;
@@ -98,5 +98,38 @@ const completedTask = (index) => {
     tasks[index].completed = true;
     showAllTasks();
 };
- const editTask = (index) => {
- };
+const editTask = (index) => {
+    const boxUpdate = document.getElementsByClassName('boxUpdate')[index];
+    boxUpdate.innerHTML = `
+    <div class="editTaskContainer">
+        <input type="text" class="editNameInput" placeholder="New task name" value="${tasks[index].name}"/>
+        <input type="date" class="editDateInput" value="${tasks[index].date}"/>
+        <div class="buttonsEditTask">
+            <button class="cancelEditButton" onclick="cancelEditTask(${index})">Cancel</button>
+            <button class="saveEditButton" onclick="saveButtonClick(${index})">Save</button>
+        </div>
+    </div>
+    `;
+    saveButtonClick = (index) =>{
+        const newName = document.querySelector('.editNameInput').value;
+        const newDate = document.querySelector('.editDateInput').value;
+        console.log(newName, newDate);
+        if(normalDate(newDate) && newName !== '') {
+            setValues(index, newName, newDate);
+        }
+        else {
+            alert('Please enter a valid name and future date.');
+        }
+    };
+
+};
+const cancelEditTask = (index) => {
+    document.getElementsByClassName('boxUpdate')[index].innerHTML = '';
+    showAllTasks();
+};
+const setValues = (index, newName, newDate) => {
+    tasks[index].name = newName;
+    tasks[index].date = newDate;
+    document.getElementsByClassName('boxUpdate')[index].innerHTML = '';
+    showAllTasks();
+}
