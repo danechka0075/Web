@@ -101,7 +101,7 @@ h3{
     align-items: center;
     justify-content: center;
     width: 50%;
-    margin-top: 50px;
+    margin-top: 10px;
     border: 3px solid #1958ed;
 }
 .PriorityandType{
@@ -251,4 +251,29 @@ input[class="editDateInput"]{
     justify-content: center;
     gap: 10px;
     margin-top: 10px;
+}
+#h2Filter{
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px;
+}
+.FilterTask{
+    display: none;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+    gap: 10px;
+    margin-bottom: 10px;
+    margin-top: 50px;
+}
+.labelFilter, .labelFilterType{
+    font-size: 16px;
+    font-weight: 500;
+}
+select[class="filterPrioritySelect"], select[class="filterTypeSelect"]{
+    width: 100px;
+    height: 30px;
+    border-radius: 5px;
+    border: 2px, solid #000000;
 }

@@ -7,8 +7,13 @@ function normalDate(date) {
 function ostLiTask() {
     if (tasks.length == 0) {
         taskList.style.display = 'none';
+        document.querySelector('.FilterTask').style.display = 'none';
     }
-    else taskList.style.display = 'flex';
+    else{
+        taskList.style.display = 'flex';
+        document.querySelector('.FilterTask').style.display = 'flex';
+    } 
+        
 }
 const nameTaskInput = document.querySelector('.taskNameInput');
 const prioritySelect = document.querySelector('.prioritySelect');
@@ -17,11 +22,37 @@ const dateInput = document.querySelector('.dateInput');
 const addTaskButton = document.querySelector('.addTaskButton');
 const taskListContainer = document.querySelector('.tasksListContent');
 const taskList = document.querySelector('.taskList');
+const filterTaskPrioritySelect = document.querySelector('.filterPrioritySelect');
+const filterTaskTypeSelect = document.querySelector('.filterTypeSelect');
+const filterButtonApply = document.querySelector('.filterApplyButton');
+const filterButtonClear = document.querySelector('.filterClearButton');
 let tasks = [];
+
+filterButtonApply.addEventListener('click', () => {
+    const selectedPriority = filterTaskPrioritySelect.value;
+    const selectedType = filterTaskTypeSelect.value;
+    const filteredTasks = tasks.filter(task => {
+            return (selectedPriority === 'All' || task.priority === selectedPriority) &&
+                   (selectedType === 'All' || task.type === selectedType);
+    });
+    let taskListHTML = '';
+    filteredTasks.map((task, index) => {
+        taskListHTML += showTask(task, index);
+    });
+    taskListContainer.innerHTML = taskListHTML;
+});
+
+filterButtonClear.addEventListener('click', () => {
+    filterTaskPrioritySelect.value = 'All';
+    filterTaskTypeSelect.value = 'All';
+    showAllTasks();
+});
+
 document.addEventListener('keydown', (event) => {
     if (event.key === 'Enter' || event.key === 'NumpadEnter' || event.key === 'Return' ) {
         addTaskButton.click();
     }
+});
 addTaskButton.addEventListener('click', () => {
     let nameTaskValue = nameTaskInput.value.trim();
     let priorityValue = prioritySelect.value;
@@ -44,12 +75,13 @@ addTaskButton.addEventListener('click', () => {
         "completed": false
     };
     tasks.push(newTask);
-    showAllTasks();
+    filterButtonClear.click();
     ostLiTask();
     nameTaskInput.value = '';
     dateInput.value = '';
     console.log("Task added:", newTask);
 });
+
 const showTask = (task, index) => {
     if (task.completed) {
         return `
@@ -84,6 +116,7 @@ const showTask = (task, index) => {
     </div>
     `;
 };
+
 const showAllTasks = () => {
     let taskListHTML = '';
     tasks.map((task, index) => {
@@ -91,15 +124,18 @@ const showAllTasks = () => {
     });
     taskListContainer.innerHTML = taskListHTML;
 };
+
 const delTask = (index) => {
     tasks.splice(index, 1);
     showAllTasks();
     ostLiTask();
 };
+
 const completedTask = (index) => {
     tasks[index].completed = true;
     showAllTasks();
 };
+
 const editTask = (index) => {
     const boxUpdate = document.getElementsByClassName('boxUpdate')[index];
     boxUpdate.innerHTML = `
@@ -112,6 +148,7 @@ const editTask = (index) => {
         </div>
     </div>
     `;
+
     saveButtonClick = (index) =>{
         const newName = document.querySelector('.editNameInput').value;
         const newDate = document.querySelector('.editDateInput').value;
@@ -123,15 +160,16 @@ const editTask = (index) => {
             alert('Please enter a valid name and future date.');
         }
     };
-
 };
+
 const cancelEditTask = (index) => {
     document.getElementsByClassName('boxUpdate')[index].innerHTML = '';
     showAllTasks();
 };
+
 const setValues = (index, newName, newDate) => {
     tasks[index].name = newName;
     tasks[index].date = newDate;
     document.getElementsByClassName('boxUpdate')[index].innerHTML = '';
     showAllTasks();
-}
+};
