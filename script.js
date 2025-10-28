@@ -50,15 +50,16 @@ addTaskButton.addEventListener('click', () => {
 const showTask = (task, index) => {
     if (task.completed) {
         return `
-    <div class="taskItemV" style="background-color: ${task.completed ? '#aaf87cff' : '#f87c7cff'};">
-        <div class="taskItem">
-            <h3 style="text-decoration: line-through; text-decoration-thickness: 3px;">${index + 1}. ${task.name}</h3>
-            <p>Status: ${task.completed ? 'Complete' : 'Not complete'}</p>
-        </div>
-        <div class="buttonTaskList">
-            <button class="taskButton" onclick="delTask(${index})">Delete</button>            
-        </div>
-    </div>`;
+        <div class="taskItemV" style="background-color: ${task.completed ? '#aaf87cff' : '#f87c7cff'};">
+            <div class="taskItem">
+                <h3 style="text-decoration: line-through; text-decoration-thickness: 3px;">${index + 1}. ${task.name}</h3>
+                <p>Status: ${task.completed ? 'Complete' : 'Not complete'}</p>
+            </div>
+            <div class="buttonTaskList">
+                <button class="taskButton" onclick="delTask(${index})">Delete</button>            
+            </div>
+            <div class="boxUpdate"></div>
+        </div>`;
     }
     else return `
     <div class="taskItemV" style="background-color: ${task.completed ? '#aaf87cff' : '#f87c7cff'};">
@@ -76,9 +77,7 @@ const showTask = (task, index) => {
             <button class="taskButton" onclick="delTask(${index})">Delete</button>            
             <button class="taskButton" onclick="completedTask(${index})">Complete</button>
         </div>
-        <div class="boxUpdate">
-
-        <div/>
+        <div class="boxUpdate"></div>
     </div>
     `;
 };
