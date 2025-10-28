@@ -4,6 +4,12 @@ function normalDate(date) {
     }
     return true;
 }
+function ostLiTask() {
+    if (tasks.length == 0) {
+        taskList.style.display = 'none';
+    }
+    else taskList.style.display = 'flex';
+}
 const nameTaskInput = document.querySelector('.taskNameInput');
 const prioritySelect = document.querySelector('.prioritySelect');
 const typeSelect = document.querySelector('.typeSelect');
@@ -18,8 +24,7 @@ addTaskButton.addEventListener('click', () => {
     let priorityValue = prioritySelect.value;
     let typeValue = typeSelect.value;
     let dateValue = dateInput.value;
-    taskList.style.display = 'flex';
-
+    
     if (nameTaskValue === '' || dateValue === '') {
         alert('Please fill in all fields.');
         return;
@@ -37,22 +42,43 @@ addTaskButton.addEventListener('click', () => {
     };
     tasks.push(newTask);
     showAllTasks();
+    ostLiTask();
     nameTaskInput.value = '';
     dateInput.value = '';
     console.log("Task added:", newTask);
 });
 const showTask = (task, index) => {
-    return `
-    <div class="taskItem" style="background-color: ${task.completed ? '#aaf87cff' : '#f87c7cff'}">
-        <h3>${index + 1}. ${task.name}</h3>
-        <p>Priority: ${task.priority}</p>
-        <p>Type: ${task.type}</p>
-        <p>Date: ${task.date}</p>
-        <p>Status: ${task.completed ? 'Complete' : 'Not complete'}</p>
-        <div class="buttonTaskList">
-            <button class="taskButton" onclick="delTask(${index})">Delete</button>
-            <button class="taskButton" onclick="completeTask(${index})">Complete</button>
+    if (task.completed) {
+        return `
+    <div class="taskItemV" style="background-color: ${task.completed ? '#aaf87cff' : '#f87c7cff'};">
+        <div class="taskItem">
+            <h3 style="text-decoration: line-through; text-decoration-thickness: 3px;">${index + 1}. ${task.name}</h3>
+            <p>Status: ${task.completed ? 'Complete' : 'Not complete'}</p>
         </div>
+        <div class="buttonTaskList">
+            <button class="taskButton" onclick="delTask(${index})">Delete</button>            
+        </div>
+    </div>`;
+    }
+    else return `
+    <div class="taskItemV" style="background-color: ${task.completed ? '#aaf87cff' : '#f87c7cff'};">
+        <div class="taskItem">
+            <h3>${index + 1}. ${task.name}</h3>
+            <p>Priority: ${task.priority}</p>
+            <p>Type: ${task.type}</p>
+            <p>Date: ${task.date}</p>
+            <p>Status: ${task.completed ? 'Complete' : 'Not complete'}</p>
+        </div>
+        <div class="buttonEditTaskDiv">
+            <button class="buttonEditTask" onclick="editTask(${index})">Edit</button>
+        </div>
+        <div class="buttonTaskList">
+            <button class="taskButton" onclick="delTask(${index})">Delete</button>            
+            <button class="taskButton" onclick="completedTask(${index})">Complete</button>
+        </div>
+        <div class="boxUpdate">
+        
+        <div/>
     </div>
     `;
 };
@@ -63,3 +89,14 @@ const showAllTasks = () => {
     });
     taskListContainer.innerHTML = taskListHTML;
 };
+const delTask = (index) => {
+    tasks.splice(index, 1);
+    showAllTasks();
+    ostLiTask();
+};
+const completedTask = (index) => {
+    tasks[index].completed = true;
+    showAllTasks();
+};
+ const editTask = (index) => {
+ };

@@ -159,6 +159,14 @@ h3{
 .addTaskButton:hover{
     background-color: #0d3bb5;
 }
+.taskListContent{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 10px;
+}
 .taskList:focus-within{
     box-shadow: 0 0 5px #1958ed;
     background-color: #f0f8ff;
@@ -168,10 +176,22 @@ h3{
     flex-direction: column;
     align-items: start;
     justify-content: space-between;
+    width: 80%;
+    padding: 10px;
+    border-radius: 10px;
+}
+.taskItemV{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
     width: 100%;
     padding: 10px;
     border-radius: 10px;
     margin-bottom: 10px;
+}
+.taskItemV:hover{
+    box-shadow: 0 0 5px #545c6e;
 }
 .taskList{
     display: none;
@@ -183,7 +203,7 @@ h3{
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: center;
     gap: 10px;
     margin-top: 10px;
 }
