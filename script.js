@@ -4,6 +4,7 @@ function normalDate(date) {
     }
     return true;
 }
+
 function ostLiTask() {
     if (tasks.length == 0) {
         taskList.style.display = 'none';
@@ -12,9 +13,9 @@ function ostLiTask() {
     else{
         taskList.style.display = 'flex';
         document.querySelector('.FilterTask').style.display = 'flex';
-    } 
-        
+    }   
 }
+
 const nameTaskInput = document.querySelector('.taskNameInput');
 const prioritySelect = document.querySelector('.prioritySelect');
 const typeSelect = document.querySelector('.typeSelect');
@@ -26,8 +27,18 @@ const filterTaskPrioritySelect = document.querySelector('.filterPrioritySelect')
 const filterTaskTypeSelect = document.querySelector('.filterTypeSelect');
 const filterButtonApply = document.querySelector('.filterApplyButton');
 const filterButtonClear = document.querySelector('.filterClearButton');
+const checkboxSort = document.querySelector('.sortCheckbox');
 let flag_filter = false;
 let tasks = [];
+
+// checkboxSort.addEventListener('change', () => {
+//     if (checkboxSort.checked) {
+//         tasks = sortedTask(tasks);
+//     }
+//     else{
+//         showAllTasks();
+//     }
+// });
 
 filterButtonApply.addEventListener('click', () => {
     const selectedPriority = filterTaskPrioritySelect.value;
@@ -52,6 +63,7 @@ document.addEventListener('keydown', (event) => {
         addTaskButton.click();
     }
 });
+
 addTaskButton.addEventListener('click', () => {
     let nameTaskValue = nameTaskInput.value.trim();
     let priorityValue = prioritySelect.value;
@@ -115,6 +127,13 @@ const showTask = (task, index) => {
     </div>
     `;
 };
+
+// const sortedTask = (tasks) => {
+//     const priorityOrder = { 'High': 1, 'Medium': 2, 'Low': 3 };
+//     return tasks.sort((a, b) => {
+//         return priorityOrder[a.priority] - priorityOrder[b.priority];
+//     });
+// };
 
 const showAllTasks = () => {
     let taskListHTML = '';
