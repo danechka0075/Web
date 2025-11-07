@@ -27,18 +27,32 @@ const filterTaskPrioritySelect = document.querySelector('.filterPrioritySelect')
 const filterTaskTypeSelect = document.querySelector('.filterTypeSelect');
 const filterButtonApply = document.querySelector('.filterApplyButton');
 const filterButtonClear = document.querySelector('.filterClearButton');
-const checkboxSort = document.querySelector('.sortCheckbox');
+const checkboxSort = document.querySelector('.sortImportanceCheckbox')
 let flag_filter = false;
 let tasks = [];
 
-// checkboxSort.addEventListener('change', () => {
-//     if (checkboxSort.checked) {
-//         tasks = sortedTask(tasks);
-//     }
-//     else{
-//         showAllTasks();
-//     }
-// });
+checkboxSort.addEventListener('change', () => {
+    sortedTask(tasks);
+});
+
+const sortedTask = (tasks) => {
+    const priorityOrder = { 'High': 1, 'Medium': 2, 'Low': 3 };
+    if (checkboxSort.checked) {
+        let toDisplay;
+        if (flag_filter) {
+            const selPr = filterTaskPrioritySelect ? filterTaskPrioritySelect.value : 'All';
+            const selType = filterTaskTypeSelect ? filterTaskTypeSelect.value : 'All';
+            toDisplay = tasks.filter(task => (selPr === 'All' || task.priority === selPr) && (selType === 'All' || task.type === selType));
+        } else {
+            toDisplay = [...tasks];
+        }
+        toDisplay.sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]);
+        showFilteredTasks(toDisplay);
+    } else {
+        flag_filter ? filterButtonApply.click() : showAllTasks();
+    }
+};
+
 
 filterButtonApply.addEventListener('click', () => {
     const selectedPriority = filterTaskPrioritySelect.value;
@@ -49,6 +63,7 @@ filterButtonApply.addEventListener('click', () => {
                    (selectedType === 'All' || task.type === selectedType);
     });
     showFilteredTasks(filteredTasks);
+    sortedTask(filteredTasks);
 });
 
 filterButtonClear.addEventListener('click', () => {
@@ -56,6 +71,7 @@ filterButtonClear.addEventListener('click', () => {
     filterTaskTypeSelect.value = 'All';
     flag_filter = false;
     showAllTasks();
+    sortedTask(tasks);
 });
 
 document.addEventListener('keydown', (event) => {
