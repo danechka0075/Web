@@ -31,9 +31,11 @@ const checkboxSort = document.querySelector('.sortImportanceCheckbox')
 let flag_filter = false;
 let tasks = [];
 
-checkboxSort.addEventListener('change', () => {
-    sortedTask(tasks);
-});
+if (checkboxSort) {
+    checkboxSort.addEventListener('change', () => {
+        sortedTask(tasks);
+    });
+}
 
 const sortedTask = (tasks) => {
     const priorityOrder = { 'High': 1, 'Medium': 2, 'Low': 3 };
@@ -46,7 +48,7 @@ const sortedTask = (tasks) => {
         } else {
             toDisplay = [...tasks];
         }
-        toDisplay.sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]);
+        toDisplay.sort((a, b) => (priorityOrder[a.priority] || 1) - (priorityOrder[b.priority] || 1));
         showFilteredTasks(toDisplay);
     } else {
         flag_filter ? filterButtonApply.click() : showAllTasks();
@@ -62,16 +64,30 @@ filterButtonApply.addEventListener('click', () => {
             return (selectedPriority === 'All' || task.priority === selectedPriority) &&
                    (selectedType === 'All' || task.type === selectedType);
     });
-    showFilteredTasks(filteredTasks);
-    sortedTask(filteredTasks);
+    if (checkboxSort && checkboxSort.checked) {
+        const priorityOrder = { 'High': 1, 'Medium': 2, 'Low': 3 };
+        const sorted = [...filteredTasks].sort((a, b) => 
+            (priorityOrder[a.priority] || 99) - (priorityOrder[b.priority] || 99)
+        );
+        showFilteredTasks(sorted);
+    } else {
+        showFilteredTasks(filteredTasks);
+    }
 });
 
 filterButtonClear.addEventListener('click', () => {
     filterTaskPrioritySelect.value = 'All';
     filterTaskTypeSelect.value = 'All';
     flag_filter = false;
-    showAllTasks();
-    sortedTask(tasks);
+    if (checkboxSort && checkboxSort.checked) {
+        const priorityOrder = { 'High': 1, 'Medium': 2, 'Low': 3 };
+        const sorted = [...tasks].sort((a, b) => 
+            (priorityOrder[a.priority] || 99) - (priorityOrder[b.priority] || 99)
+        );
+        showFilteredTasks(sorted);
+    } else {
+        showAllTasks();
+    }
 });
 
 document.addEventListener('keydown', (event) => {
@@ -109,16 +125,16 @@ addTaskButton.addEventListener('click', () => {
     console.log("Task added:", newTask);
 });
 
-const showTask = (task, index) => {
+const showTask = (task, displayIndex, originalIndex) => {
     if (task.completed) {
         return `
         <div class="taskItemV" style="background-color: ${task.completed ? '#aaf87cff' : '#f87c7cff'};">
             <div class="taskItem">
-                <h3 style="text-decoration: line-through; text-decoration-thickness: 3px;">${index + 1}. ${task.name}</h3>
+                <h3 style="text-decoration: line-through; text-decoration-thickness: 3px;">${displayIndex + 1}. ${task.name}</h3>
                 <p>Status: ${task.completed ? 'Complete' : 'Not complete'}</p>
             </div>
             <div class="buttonTaskList">
-                <button class="taskButton" onclick="delTask(${index})">Delete</button>            
+                <button class="taskButton" onclick="delTask(${originalIndex})">Delete</button>            
             </div>
             <div class="boxUpdate"></div>
         </div>`;
@@ -126,56 +142,113 @@ const showTask = (task, index) => {
     else return `
     <div class="taskItemV" style="background-color: ${task.completed ? '#aaf87cff' : '#f87c7cff'};">
         <div class="taskItem">
-            <h3>${index + 1}. ${task.name}</h3>
+            <h3>${displayIndex + 1}. ${task.name}</h3>
             <p>Priority: ${task.priority}</p>
             <p>Type: ${task.type}</p>
             <p>Date: ${task.date}</p>
             <p>Status: ${task.completed ? 'Complete' : 'Not complete'}</p>
         </div>
         <div class="buttonEditTaskDiv">
-            <button class="buttonEditTask" onclick="editTask(${index})">Edit</button>
+            <button class="buttonEditTask" onclick="editTask(${originalIndex})">Edit</button>
         </div>
         <div class="buttonTaskList">
-            <button class="taskButton" onclick="delTask(${index})">Delete</button>            
-            <button class="taskButton" onclick="completedTask(${index})">Complete</button>
+            <button class="taskButton" onclick="delTask(${originalIndex})">Delete</button>            
+            <button class="taskButton" onclick="completedTask(${originalIndex})">Complete</button>
         </div>
         <div class="boxUpdate"></div>
     </div>
     `;
 };
 
-// const sortedTask = (tasks) => {
-//     const priorityOrder = { 'High': 1, 'Medium': 2, 'Low': 3 };
-//     return tasks.sort((a, b) => {
-//         return priorityOrder[a.priority] - priorityOrder[b.priority];
-//     });
-// };
-
 const showAllTasks = () => {
     let taskListHTML = '';
-    tasks.map((task, index) => {
-        taskListHTML += showTask(task, index);
+    tasks.forEach((task, index) => {
+        taskListHTML += showTask(task, index, index);
     });
     taskListContainer.innerHTML = taskListHTML;
 };
 
 const showFilteredTasks = (Tasks) => {
     let taskListHTML = '';
-    Tasks.map((task, index) => {
-        taskListHTML += showTask(task, index);
+    
+    const tasksWithIndices = Tasks.map((task) => ({
+        task,
+        originalIndex: tasks.findIndex(t => t === task)
+    }));
+    
+    tasksWithIndices.forEach((item, displayIndex) => {
+        taskListHTML += showTask(item.task, displayIndex, item.originalIndex);
     });
     taskListContainer.innerHTML = taskListHTML;
 };
 
 const delTask = (index) => {
+
     tasks.splice(index, 1);
-    flag_filter?filterButtonApply.click():showAllTasks();
+    
+    if (flag_filter) {
+        const selectedPriority = filterTaskPrioritySelect.value;
+        const selectedType = filterTaskTypeSelect.value;
+        const filteredTasks = tasks.filter(task => {
+            return (selectedPriority === 'All' || task.priority === selectedPriority) &&
+                   (selectedType === 'All' || task.type === selectedType);
+        });
+        if (checkboxSort && checkboxSort.checked) {
+            const priorityOrder = { 'High': 1, 'Medium': 2, 'Low': 3 };
+            const sorted = [...filteredTasks].sort((a, b) => 
+                (priorityOrder[a.priority] || 99) - (priorityOrder[b.priority] || 99)
+            );
+            showFilteredTasks(sorted);
+        } else {
+            showFilteredTasks(filteredTasks);
+        }
+    } else {
+        if (checkboxSort && checkboxSort.checked) {
+            const priorityOrder = { 'High': 1, 'Medium': 2, 'Low': 3 };
+            const sorted = [...tasks].sort((a, b) => 
+                (priorityOrder[a.priority] || 99) - (priorityOrder[b.priority] || 99)
+            );
+            showFilteredTasks(sorted);
+        } else {
+            showAllTasks();
+        }
+    }
     ostLiTask();
 };
 
 const completedTask = (index) => {
-    tasks[index].completed = true;
-    flag_filter?filterButtonApply.click():showAllTasks();
+
+    const taskToComplete = tasks[index];
+
+    taskToComplete.completed = true;
+    
+    if (flag_filter) {
+        const selectedPriority = filterTaskPrioritySelect.value;
+        const selectedType = filterTaskTypeSelect.value;
+        const filteredTasks = tasks.filter(task => {
+            return (selectedPriority === 'All' || task.priority === selectedPriority) &&
+                   (selectedType === 'All' || task.type === selectedType);
+        });
+        if (checkboxSort && checkboxSort.checked) {
+            const priorityOrder = { 'High': 1, 'Medium': 2, 'Low': 3 };
+            const sorted = [...filteredTasks].sort((a, b) => 
+                (priorityOrder[a.priority] || 99) - (priorityOrder[b.priority] || 99)
+            );
+            showFilteredTasks(sorted);
+        } else {
+            showFilteredTasks(filteredTasks);
+        }
+    } else {
+        if (checkboxSort && checkboxSort.checked) {
+            const priorityOrder = { 'High': 1, 'Medium': 2, 'Low': 3 };
+            const sorted = [...tasks].sort((a, b) => 
+                (priorityOrder[a.priority] || 99) - (priorityOrder[b.priority] || 99)
+            );
+            showFilteredTasks(sorted);
+        } else {
+            showAllTasks();
+        }
+    }
 };
 
 const editTask = (index) => {
