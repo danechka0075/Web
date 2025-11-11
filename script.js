@@ -129,31 +129,33 @@ const showTask = (task, displayIndex, originalIndex) => {
     if (task.completed) {
         return `
         <div class="taskItemV" style="background-color: ${task.completed ? '#aaf87cff' : '#f87c7cff'};">
-            <div class="taskItem">
-                <h3 style="text-decoration: line-through; text-decoration-thickness: 3px;">${displayIndex + 1}. ${task.name}</h3>
-                <p>Status: ${task.completed ? 'Complete' : 'Not complete'}</p>
-            </div>
-            <div class="buttonTaskList">
-                <button class="taskButton" onclick="delTask(${originalIndex})">Delete</button>            
+            <div class="taskItemContainer">
+                <div class="taskItem">
+                    <h3 style="text-decoration: line-through; text-decoration-thickness: 3px;">${displayIndex + 1}. ${task.name}</h3>
+                    <p>Status: ${task.completed ? 'Complete' : 'Not complete'}</p>
+                </div>
+                <div class="buttonTaskList">
+                    <button class="taskButton" onclick="delTask(${originalIndex})">Delete</button>            
+                </div>
             </div>
             <div class="boxUpdate"></div>
         </div>`;
     }
     else return `
     <div class="taskItemV" style="background-color: ${task.completed ? '#aaf87cff' : '#f87c7cff'};">
-        <div class="taskItem">
-            <h3>${displayIndex + 1}. ${task.name}</h3>
-            <p>Priority: ${task.priority}</p>
-            <p>Type: ${task.type}</p>
-            <p>Date: ${task.date}</p>
-            <p>Status: ${task.completed ? 'Complete' : 'Not complete'}</p>
-        </div>
-        <div class="buttonEditTaskDiv">
-            <button class="buttonEditTask" onclick="editTask(${originalIndex})">Edit</button>
-        </div>
-        <div class="buttonTaskList">
-            <button class="taskButton" onclick="delTask(${originalIndex})">Delete</button>            
-            <button class="taskButton" onclick="completedTask(${originalIndex})">Complete</button>
+        <div class="taskItemContainer">
+            <div class="taskItem">
+                <h3>${displayIndex + 1}. ${task.name}</h3>
+                <p>Priority: ${task.priority}</p>
+                <p>Type: ${task.type}</p>
+                <p>Date: ${task.date}</p>
+                <p>Status: ${task.completed ? 'Complete' : 'Not complete'}</p>
+            </div>
+            <div class="taskButtonsRight">
+                <button class="buttonEditTask" onclick="editTask(${originalIndex})">Edit</button>
+                <button class="taskButton" onclick="delTask(${originalIndex})">Delete</button>            
+                <button class="taskButton" onclick="completedTask(${originalIndex})">Complete</button>
+            </div>
         </div>
         <div class="boxUpdate"></div>
     </div>
