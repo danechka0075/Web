@@ -134,7 +134,7 @@ addTaskButton.addEventListener('click', () => {
 const showTask = (task, displayIndex) => {
     if (task.completed) {
         return `
-        <div class="taskItemV" data-id="${task.id}" style="background-color: ${task.completed ? '#aaf87cff' : '#f87c7cff'};">
+        <div class="taskItemV" data-id="${task.id}" draggable="true" style="background-color: ${task.completed ? '#aaf87cff' : '#f87c7cff'};">
             <div class="taskItemContainer">
                 <div class="taskItem">
                     <h3 style="text-decoration: line-through; text-decoration-thickness: 3px;">${displayIndex + 1}. ${task.name}</h3>
@@ -148,7 +148,7 @@ const showTask = (task, displayIndex) => {
         </div>`;
     }
     else return `
-    <div class="taskItemV" data-id="${task.id}" style="background-color: ${task.completed ? '#aaf87cff' : '#f87c7cff'};">
+    <div class="taskItemV" data-id="${task.id}" draggable="true" style="background-color: ${task.completed ? '#aaf87cff' : '#f87c7cff'};">
         <div class="taskItemContainer">
             <div class="taskItem">
                 <h3>${displayIndex + 1}. ${task.name}</h3>
@@ -292,3 +292,24 @@ const setValues = (id, newName, newDate) => {
     flag_filter?filterButtonApply.click():showAllTasks();
 };
 
+//Drag and Drop
+let draggedTaskId = null;
+
+document.addEventListener('dragstart', (e) => {
+    const taskEl = e.target.closest('.taskItemV');
+    if (!taskEl) return;
+    draggedTaskId = taskEl.getAttribute('data-id');
+    if(taskEl.draggable)
+    {
+        taskEl.style.opacity = '0.5';
+        taskEl.style.cursor = 'moving';
+        e.dataTransfer.effectAllowed = 'move';
+    }
+});
+document.addEventListener('dragend', (e) => {
+    const taskEl = e.target.closest('.taskItemV');
+    if (!taskEl) return;
+    taskEl.style.opacity = '1';
+    taskEl.style.cursor = 'grab';
+    draggedTaskId = null;
+});
