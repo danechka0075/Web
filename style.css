@@ -352,3 +352,19 @@ select[class="filterPrioritySelect"], select[class="filterTypeSelect"]{
     gap: 10px;
     margin-top: 29px;
 }
+button.Up {
+    position: fixed;
+    bottom: 20px;
+    right: 25px;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    background-color: #1958ed;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+button.Up:hover {
+    background-color: #0d3bb5;
+}

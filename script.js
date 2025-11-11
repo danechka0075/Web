@@ -28,8 +28,13 @@ const filterTaskTypeSelect = document.querySelector('.filterTypeSelect');
 const filterButtonApply = document.querySelector('.filterApplyButton');
 const filterButtonClear = document.querySelector('.filterClearButton');
 const checkboxSort = document.querySelector('.sortImportanceCheckbox')
+const buttonUP = document.querySelector('.Up');
 let flag_filter = false;
 let tasks = [];
+
+buttonUP.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });   
+});
 
 if (checkboxSort) {
     checkboxSort.addEventListener('change', () => {
