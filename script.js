@@ -116,6 +116,7 @@ addTaskButton.addEventListener('click', () => {
         return;
     }
     let newTask = {
+        id: Date.now().toString(),
         "name": nameTaskValue,
         "priority": priorityValue,
         "type": typeValue,
@@ -130,24 +131,24 @@ addTaskButton.addEventListener('click', () => {
     console.log("Task added:", newTask);
 });
 
-const showTask = (task, displayIndex, originalIndex) => {
+const showTask = (task, displayIndex) => {
     if (task.completed) {
         return `
-        <div class="taskItemV" style="background-color: ${task.completed ? '#aaf87cff' : '#f87c7cff'};">
+        <div class="taskItemV" data-id="${task.id}" style="background-color: ${task.completed ? '#aaf87cff' : '#f87c7cff'};">
             <div class="taskItemContainer">
                 <div class="taskItem">
                     <h3 style="text-decoration: line-through; text-decoration-thickness: 3px;">${displayIndex + 1}. ${task.name}</h3>
                     <p>Status: ${task.completed ? 'Complete' : 'Not complete'}</p>
                 </div>
                 <div class="buttonTaskList">
-                    <button class="taskButton" onclick="delTask(${originalIndex})">Delete</button>            
+                    <button class="taskButton" onclick="delTask('${task.id}')">Delete</button>            
                 </div>
             </div>
             <div class="boxUpdate"></div>
         </div>`;
     }
     else return `
-    <div class="taskItemV" style="background-color: ${task.completed ? '#aaf87cff' : '#f87c7cff'};">
+    <div class="taskItemV" data-id="${task.id}" style="background-color: ${task.completed ? '#aaf87cff' : '#f87c7cff'};">
         <div class="taskItemContainer">
             <div class="taskItem">
                 <h3>${displayIndex + 1}. ${task.name}</h3>
@@ -157,9 +158,9 @@ const showTask = (task, displayIndex, originalIndex) => {
                 <p>Status: ${task.completed ? 'Complete' : 'Not complete'}</p>
             </div>
             <div class="taskButtonsRight">
-                <button class="buttonEditTask" onclick="editTask(${originalIndex})">Edit</button>
-                <button class="taskButton" onclick="delTask(${originalIndex})">Delete</button>            
-                <button class="taskButton" onclick="completedTask(${originalIndex})">Complete</button>
+                <button class="buttonEditTask" onclick="editTask('${task.id}')">Edit</button>
+                <button class="taskButton" onclick="delTask('${task.id}')">Delete</button>            
+                <button class="taskButton" onclick="completedTask('${task.id}')">Complete</button>
             </div>
         </div>
         <div class="boxUpdate"></div>
@@ -170,27 +171,22 @@ const showTask = (task, displayIndex, originalIndex) => {
 const showAllTasks = () => {
     let taskListHTML = '';
     tasks.forEach((task, index) => {
-        taskListHTML += showTask(task, index, index);
+        taskListHTML += showTask(task, index);
     });
     taskListContainer.innerHTML = taskListHTML;
 };
 
 const showFilteredTasks = (Tasks) => {
     let taskListHTML = '';
-    
-    const tasksWithIndices = Tasks.map((task) => ({
-        task,
-        originalIndex: tasks.findIndex(t => t === task)
-    }));
-    
-    tasksWithIndices.forEach((item, displayIndex) => {
-        taskListHTML += showTask(item.task, displayIndex, item.originalIndex);
+    Tasks.forEach((task, displayIndex) => {
+        taskListHTML += showTask(task, displayIndex);
     });
     taskListContainer.innerHTML = taskListHTML;
 };
 
-const delTask = (index) => {
-
+const delTask = (id) => {
+    const index = tasks.findIndex(t => t.id === id);
+    if (index === -1) return;
     tasks.splice(index, 1);
     
     if (flag_filter) {
@@ -223,8 +219,9 @@ const delTask = (index) => {
     ostLiTask();
 };
 
-const completedTask = (index) => {
-
+const completedTask = (id) => {
+    const index = tasks.findIndex(t => t.id === id);
+    if (index === -1) return;
     const taskToComplete = tasks[index];
 
     taskToComplete.completed = true;
@@ -258,40 +255,40 @@ const completedTask = (index) => {
     }
 };
 
-const editTask = (index) => {
-    const boxUpdate = document.getElementsByClassName('boxUpdate')[index];
+const editTask = (id) => {
+    const taskEl = document.querySelector(`.taskItemV[data-id="${id}"]`);
+    if (!taskEl) return;
+    const index = tasks.findIndex(t => t.id === id);
+    if (index === -1) return;
+    const boxUpdate = taskEl.querySelector('.boxUpdate');
     boxUpdate.innerHTML = `
     <div class="editTaskContainer">
         <input type="text" class="editNameInput" placeholder="New task name" value="${tasks[index].name}"/>
         <input type="date" class="editDateInput" value="${tasks[index].date}"/>
         <div class="buttonsEditTask">
-            <button class="cancelEditButton" onclick="cancelEditTask(${index})">Cancel</button>
-            <button class="saveEditButton" onclick="saveButtonClick(${index})">Save</button>
+            <button class="cancelEditButton" onclick="cancelEditTask('${id}')">Cancel</button>
+            <button class="saveEditButton" onclick="setValues('${id}', document.querySelector('.editNameInput')?.value, document.querySelector('.editDateInput')?.value)">Save</button>
         </div>
     </div>
     `;
-
-    saveButtonClick = (index) =>{
-        const newName = document.querySelector('.editNameInput').value;
-        const newDate = document.querySelector('.editDateInput').value;
-        console.log(newName, newDate);
-        if(normalDate(newDate) && newName !== '') {
-            setValues(index, newName, newDate);
-        }
-        else {
-            alert('Please enter a valid name and future date.');
-        }
-    };
 };
 
-const cancelEditTask = (index) => {
-    document.getElementsByClassName('boxUpdate')[index].innerHTML = '';
+const cancelEditTask = (id) => {
+    const taskEl = document.querySelector(`.taskItemV[data-id="${id}"]`);
+    if (!taskEl) return;
+    const boxUpdate = taskEl.querySelector('.boxUpdate');
+    if (boxUpdate) boxUpdate.innerHTML = '';
     flag_filter?filterButtonApply.click():showAllTasks();
 };
 
-const setValues = (index, newName, newDate) => {
+const setValues = (id, newName, newDate) => {
+    const index = tasks.findIndex(t => t.id === id);
+    if (index === -1) return;
     tasks[index].name = newName;
     tasks[index].date = newDate;
-    document.getElementsByClassName('boxUpdate')[index].innerHTML = '';
+    const taskEl = document.querySelector(`.taskItemV[data-id="${id}"]`);
+    const boxUpdate = taskEl ? taskEl.querySelector('.boxUpdate') : null;
+    if (boxUpdate) boxUpdate.innerHTML = '';
     flag_filter?filterButtonApply.click():showAllTasks();
 };
+
