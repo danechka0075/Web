@@ -329,22 +329,29 @@ taskListDrag.addEventListener('dragend', (e) => {
     draggedTaskId = null;
 
     document.querySelectorAll('.taskItemV').forEach(e => {
-        e.style.borderTop = '';
+        e.style.boxShadow = '';
     })
 });
 
 taskListDrag.addEventListener('dragover', (e) => {
     e.preventDefault();
+    const peretTask = e.target.closest('.taskItemV')
+    if(!peretTask) return;
+
+    document.querySelectorAll('.taskItemV').forEach(e => {
+        e.style.boxShadow = '';
+    })
+    if(peretTask.getAttribute('data-id') != draggedTaskId){
+        peretTask.style.boxShadow = '0 0 0 2px #2196f3, 0 4px 8px rgba(33, 150, 243, 0.3)';
+    }
+});
+taskListDrag.addEventListener('dragleave', (e) => {
     const peretTask = document.querySelector('.taskItemV')
     if(!peretTask) return;
 
     document.querySelectorAll('.taskItemV').forEach(e => {
-        e.style.borderTop = '';
+        e.style.boxShadow = '';
     })
-    if(peretTask.getAttribute('data-id') != draggedTaskId){
-        peretTask.style.borderTop = '2px solid black';
-    }
-
 });
 
 taskListDrag.addEventListener('drop', (e) => {
