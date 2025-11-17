@@ -16,6 +16,7 @@ function ostLiTask() {
     }   
 }
 
+
 const nameTaskInput = document.querySelector('.taskNameInput');
 const prioritySelect = document.querySelector('.prioritySelect');
 const typeSelect = document.querySelector('.typeSelect');
@@ -29,8 +30,16 @@ const filterButtonApply = document.querySelector('.filterApplyButton');
 const filterButtonClear = document.querySelector('.filterClearButton');
 const checkboxSort = document.querySelector('.sortImportanceCheckbox')
 const buttonUP = document.querySelector('.Up');
+const taskListDrag = document.querySelector('.tasksListContent')
 let flag_filter = false;
-let tasks = [];
+let tasks = []
+!localStorage.tasks? tasks = []: tasks=JSON.parse(localStorage.getItem('tasks'))
+ostLiTask()
+
+
+const updateLocalStorage = () => {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+}
 
 buttonUP.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });   
@@ -129,7 +138,9 @@ addTaskButton.addEventListener('click', () => {
     nameTaskInput.value = '';
     dateInput.value = '';
     console.log("Task added:", newTask);
+    updateLocalStorage();
 });
+
 
 const showTask = (task, displayIndex) => {
     if (task.completed) {
@@ -216,6 +227,7 @@ const delTask = (id) => {
             showAllTasks();
         }
     }
+    updateLocalStorage();
     ostLiTask();
 };
 
@@ -253,6 +265,7 @@ const completedTask = (id) => {
             showAllTasks();
         }
     }
+    updateLocalStorage();
 };
 
 const editTask = (id) => {
@@ -290,12 +303,13 @@ const setValues = (id, newName, newDate) => {
     const boxUpdate = taskEl ? taskEl.querySelector('.boxUpdate') : null;
     if (boxUpdate) boxUpdate.innerHTML = '';
     flag_filter?filterButtonApply.click():showAllTasks();
+    updateLocalStorage();
 };
 
 //Drag and Drop
 let draggedTaskId = null;
 
-document.addEventListener('dragstart', (e) => {
+taskListDrag.addEventListener('dragstart', (e) => {
     const taskEl = e.target.closest('.taskItemV');
     if (!taskEl) return;
     draggedTaskId = taskEl.getAttribute('data-id');
@@ -307,19 +321,33 @@ document.addEventListener('dragstart', (e) => {
     }
 });
 
-document.addEventListener('dragend', (e) => {
+taskListDrag.addEventListener('dragend', (e) => {
     const taskEl = e.target.closest('.taskItemV');
     if (!taskEl) return;
     taskEl.style.opacity = '1';
     taskEl.style.cursor = 'grab';
     draggedTaskId = null;
+
+    document.querySelectorAll('.taskItemV').forEach(e => {
+        e.style.borderTop = '';
+    })
 });
-document.addEventListener('dragover', (e) => {
+
+taskListDrag.addEventListener('dragover', (e) => {
     e.preventDefault();
+    const peretTask = document.querySelector('.taskItemV')
+    if(!peretTask) return;
+
+    document.querySelectorAll('.taskItemV').forEach(e => {
+        e.style.borderTop = '';
+    })
+    if(peretTask.getAttribute('data-id') != draggedTaskId){
+        peretTask.style.borderTop = '2px solid black';
+    }
+
 });
 
-
-document.addEventListener('drop', (e) => {
+taskListDrag.addEventListener('drop', (e) => {
     e.preventDefault();
     const taskEl = e.target.closest('.taskItemV');
     if (!taskEl) return;
@@ -338,4 +366,6 @@ document.addEventListener('drop', (e) => {
     } else {
         showAllTasks();
     }
+    updateLocalStorage();
 });
+showAllTasks()
