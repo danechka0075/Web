@@ -245,6 +245,28 @@ h3{
     justify-content: flex-start;
     min-width: 100px;
 }
+.taskButton{
+    width: 80px;
+    height: 30px;
+    font-size: 14px;
+    font-weight: bold;
+    background-color: #1958ed;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.buttonEditTask{
+    width: 80px;
+    height: 30px;
+    font-size: 14px;
+    font-weight: bold;
+    background-color: #1958ed;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
 #h2list{
     margin-bottom: 10px;
     font-size: 26px;
@@ -323,10 +345,20 @@ select[class="filterPrioritySelect"], select[class="filterTypeSelect"]{
     justify-content: center;
     gap: 10px;
 }
-
+.removeAllTasks{
+    width: 80px;
+    height: 40px;
+    font-size: 14px;
+    font-weight: bold;
+    background-color: #1958ed;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
 .filterApplyButton, .filterClearButton{
     width: 80px;
-    height: 30px;
+    height: 40px;
     font-size: 14px;
     font-weight: bold;
     background-color: #1958ed;

@@ -5,7 +5,7 @@ function normalDate(date) {
     return true;
 }
 
-function ostLiTask() {
+const ostLiTask = () => {
     if (tasks.length == 0) {
         taskList.style.display = 'none';
         document.querySelector('.FilterTask').style.display = 'none';
@@ -15,6 +15,7 @@ function ostLiTask() {
         document.querySelector('.FilterTask').style.display = 'flex';
     }   
 }
+
 
 
 const nameTaskInput = document.querySelector('.taskNameInput');
@@ -31,12 +32,18 @@ const filterButtonClear = document.querySelector('.filterClearButton');
 const checkboxSort = document.querySelector('.sortImportanceCheckbox')
 const buttonUP = document.querySelector('.Up');
 const taskListDrag = document.querySelector('.tasksListContent')
+const buttonRemoveAll = document.querySelector('.removeAllTasks')
 let flag_filter = false;
 let tasks = []
 !localStorage.tasks? tasks = []: tasks=JSON.parse(localStorage.getItem('tasks'))
 ostLiTask()
 
-
+buttonRemoveAll.addEventListener('click', () => {
+    tasks = []
+    updateLocalStorage();
+    ostLiTask();
+    showAllTasks();
+})
 const updateLocalStorage = () => {
     localStorage.setItem('tasks', JSON.stringify(tasks));
 }
@@ -137,7 +144,6 @@ addTaskButton.addEventListener('click', () => {
     ostLiTask();
     nameTaskInput.value = '';
     dateInput.value = '';
-    console.log("Task added:", newTask);
     updateLocalStorage();
 });
 
